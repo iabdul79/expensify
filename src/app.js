@@ -14,10 +14,8 @@ import { Provider } from 'react-redux'
 const store = configureStore();
 
 store.dispatch(addExpense({description: 'Water bill', amount: 100}))
-store.dispatch(addExpense({description: 'Gas bill', amount: 500}))
-store.dispatch(setTextFilter('water'))
-
-setTimeout(() => store.dispatch(setTextFilter('bill')), 3000)
+store.dispatch(addExpense({description: 'Gas bill', amount: 500, createdAt: 1000}))
+store.dispatch(addExpense({description: 'Rent', amount: 109500}))
 
 const state = store.getState();
 const visibleExpenses = getVisibleExpense(state.expenses, state.filters)

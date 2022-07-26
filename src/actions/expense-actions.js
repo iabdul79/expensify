@@ -7,16 +7,16 @@ export const addExpense = ({
   amount = 0,
   createdAt = 0
 } = {}) => {
-return {
-  type: 'ADD_EXPENSE',
-  expense: {
-    id: uuid(),
-    description,
-    note,
-    amount,
-    createdAt
+  return {
+    type: 'ADD_EXPENSE',
+    expense: {
+      id: uuid(),
+      description,
+      note,
+      amount,
+      createdAt
+    }
   }
-}
 }
 
 // REMOVE_EXPENSE
