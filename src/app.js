@@ -7,19 +7,9 @@ import 'normalize.css/normalize.css'
 import './styles/main.scss'
 import 'react-dates/lib/css/_datepicker.css'
 import configureStore from './store/configure-store'
-import {getVisibleExpense} from './selectors/expense-selectors'
-import {addExpense} from './actions/expense-actions'
 import { Provider } from 'react-redux'
 
 const store = configureStore();
-
-store.dispatch(addExpense({description: 'Water bill', amount: 100}))
-store.dispatch(addExpense({description: 'Gas bill', amount: 500, createdAt: 1000}))
-store.dispatch(addExpense({description: 'Rent', amount: 109500}))
-
-const state = store.getState();
-const visibleExpenses = getVisibleExpense(state.expenses, state.filters)
-console.log(visibleExpenses);
 
 
 const AppComponent = (
