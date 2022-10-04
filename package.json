@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production --env production",
     "dev": "webpack serve --mode development",
     "test:dev": "jest --config=jest.config.json --watch",
     "test": "jest --config=jest.config.json"
@@ -24,6 +24,7 @@
     "enzyme-adapter-react-16": "1.0.0",
     "enzyme-to-json": "3.0.1",
     "jest": "24.8.0",
+    "mini-css-extract-plugin": "1.4.1",
     "moment": "2.18.1",
     "node-sass": "^4.14.1",
     "normalize.css": "^7.0.0",
