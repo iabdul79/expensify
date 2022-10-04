@@ -5,10 +5,10 @@ import Header from './components/Header'
 import AppRouter from './routers/AppRouter'
 import 'normalize.css/normalize.css'
 import './styles/main.scss'
+import 'react-dates/lib/css/_datepicker.css'
 import configureStore from './store/configure-store'
 import {getVisibleExpense} from './selectors/expense-selectors'
-import {addExpense, editExpense, removeExpense} from './actions/expense-actions'
-import {setEndDate, setStartDate, setTextFilter, sortByAmount, sortByDate} from './actions/filters-actions'
+import {addExpense} from './actions/expense-actions'
 import { Provider } from 'react-redux'
 
 const store = configureStore();

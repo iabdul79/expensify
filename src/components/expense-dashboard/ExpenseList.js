@@ -2,11 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { getVisibleExpense } from '../../selectors/expense-selectors'
 import ExpenseItem from './ExpenseItem'
-import { removeExpense } from '../../actions/expense-actions'
 
-const ExpenseList = (props) => (
+export const ExpenseList = (props) => (
   <div>
-    <h1>Expense List</h1>
+    {props.expenses.length ? <h1>Expense List</h1> : <h2> No Expenses Available</h2>}
     {props.expenses.map(expense => <ExpenseItem key={expense.id} expense={expense} />)}
   </div>
 )
