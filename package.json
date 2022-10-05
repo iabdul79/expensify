@@ -11,6 +11,9 @@
     "start": "node server/server.js",
     "heroku-postbuild": "yarn run build"
   },
+  "engines": {
+    "node": "^14.19.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
