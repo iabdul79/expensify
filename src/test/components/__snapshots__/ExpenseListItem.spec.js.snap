@@ -10,9 +10,9 @@ exports[`should show expense item details for a passed item 1`] = `
     </h2>
   </[object Object]>
   <p>
-    12100
-     - 
-    345600000
+    $12,100.00
+    -
+    January 5th, 1970
   </p>
 </div>
 `;
