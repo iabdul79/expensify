@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render summary component 1`] = `
+<p>
+  Viewing 3 expenses totalling $1,234.00
+</p>
+`;
