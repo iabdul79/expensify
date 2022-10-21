@@ -1,9 +1,10 @@
 import configureMockStore from 'redux-mock-store'
-import { addExpense, removeExpense, editExpense, addExpenseRx } from '../../actions/expense-actions'
+import { addExpense, removeExpense, editExpense, addExpenseRx, setExpenses, setExpensesRx } from '../../actions/expense-actions'
 import expenses from '../fixtures/expenses'
 import thunk from 'redux-thunk'
-import { dbAddExpense } from '../../firebase/firebase-operations'
+import { dbAddExpense, subscribeToExpenses } from '../../firebase/firebase-operations'
 jest.mock('../../firebase/firebase-operations')
+
 
 const createMockStore = configureMockStore([thunk])
 
@@ -34,6 +35,14 @@ test('should setup add expense action object with values', () => {
   })
 })
 
+test('should update expenses to the store', () => {
+  const action = setExpenses(expenses)
+  expect(action).toEqual({
+    type: 'SET_EXPENSES',
+    expenses
+  })
+})
+
 test('should add expense to database and store for given values', async () => {
   const store = createMockStore({})
   const expenseData = {
@@ -42,13 +51,12 @@ test('should add expense to database and store for given values', async () => {
     amount: 3020,
     createdAt: 1000
   }
-  const response =  new Promise((res, rej) => {
-    res({
+  dbAddExpense.mockResolvedValue(
+      Promise.resolve({
       id: 'test_sample_id_2',
       ...expenseData
     })
-  })
-  dbAddExpense.mockResolvedValue(response)
+  )
   await store.dispatch(addExpenseRx(expenseData))
   const action = store.getActions()[0]
   expect(action).toEqual({
@@ -68,14 +76,13 @@ test('should add expense to database and store with default values', async () =>
     note: '',
     amount: 0,
     createdAt: 0
-  }
-  const response =  new Promise((res, rej) => {
-    res({
+  } 
+  dbAddExpense.mockResolvedValue(
+    Promise.resolve({
       id: 'test_sample_id_1',
       ...defaultExpense
     })
-  })
-  dbAddExpense.mockResolvedValue(response)
+  )
   await store.dispatch(addExpenseRx())
   const action = store.getActions()[0]
   expect(action).toEqual({
@@ -88,16 +95,15 @@ test('should add expense to database and store with default values', async () =>
   expect(action.expense.id).toBe('test_sample_id_1')
 })
 
-// test('should setup add expense action object with defaults', () => {
-//   const action = addExpense()
-//   expect(action).toEqual({
-//     type: 'ADD_EXPENSE',
-//     expense: {
-//       description: '',
-//       note: '',
-//       amount: 0,
-//       createdAt: 0,
-//       id: expect.any(String)
-//     }
-//   })
-// })
+test('should update expenses to the store from database', () => {
+  const store = createMockStore({})
+  subscribeToExpenses.mockImplementation((callback) => {
+    callback(expenses)
+  })
+  store.dispatch(setExpensesRx())
+  const action = store.getActions()[0]
+  expect(action).toEqual({
+    type: 'SET_EXPENSES',
+    expenses
+  })
+})

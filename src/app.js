@@ -8,8 +8,11 @@ import './styles/main.scss'
 import 'react-dates/lib/css/_datepicker.css'
 import configureStore from './store/configure-store'
 import { Provider } from 'react-redux'
+import { setExpensesRx } from './actions/expense-actions'
 
-const store = configureStore();
+const store = configureStore()
+
+store.dispatch(setExpensesRx())
 
 
 const AppComponent = (
