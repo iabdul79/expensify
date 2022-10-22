@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store'
-import { addExpense, removeExpense, editExpense, addExpenseRx, setExpenses, setExpensesRx } from '../../actions/expense-actions'
+import { addExpense, removeExpense, editExpense, addExpenseRx, setExpenses, setExpensesRx, updateExpenseRx, removeExpenseRx } from '../../actions/expense-actions'
 import expenses from '../fixtures/expenses'
 import thunk from 'redux-thunk'
-import { dbAddExpense, subscribeToExpenses } from '../../firebase/firebase-operations'
+import { dbAddExpense, dbRemoveExpense, dbUpdateExpense, subscribeToExpenses } from '../../firebase/firebase-operations'
 jest.mock('../../firebase/firebase-operations')
 
 
@@ -95,7 +95,7 @@ test('should add expense to database and store with default values', async () =>
   expect(action.expense.id).toBe('test_sample_id_1')
 })
 
-test('should update expenses to the store from database', () => {
+test('should set expenses to the store from database', () => {
   const store = createMockStore({})
   subscribeToExpenses.mockImplementation((callback) => {
     callback(expenses)
@@ -105,5 +105,46 @@ test('should update expenses to the store from database', () => {
   expect(action).toEqual({
     type: 'SET_EXPENSES',
     expenses
+  })
+})
+
+test('should update expense to database and store', async () => {
+  const store = createMockStore({})
+  const expenseData = {
+    description: 'Mouse',
+    note: 'for laptop',
+    amount: 3020,
+    createdAt: 1000
+  }
+  dbUpdateExpense.mockResolvedValue(
+      Promise.resolve({
+      id: 'test_sample_id_2',
+      ...expenseData
+    })
+  )
+  await store.dispatch(updateExpenseRx('test_sample_id_2', expenseData))
+  const action = store.getActions()[0]
+  expect(dbUpdateExpense).toHaveBeenCalledWith('test_sample_id_2', expenseData)
+  expect(action).toEqual({
+    type: 'EDIT_EXPENSE',
+    id: 'test_sample_id_2',
+    overrideExpense: {
+      id: 'test_sample_id_2',
+      ...expenseData
+    }
+  })
+})
+
+test('should remove expense from database and store', async () => {
+  const store = createMockStore({})
+  dbRemoveExpense.mockResolvedValue(
+    Promise.resolve({})
+  )
+  await store.dispatch(removeExpenseRx('test_sample_id_2'))
+  expect(dbRemoveExpense).toHaveBeenCalledWith('test_sample_id_2')
+  const action = store.getActions()[0]
+  expect(action).toEqual({
+    type: 'REMOVE_EXPENSE',
+    id: 'test_sample_id_2'
   })
 })

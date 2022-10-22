@@ -1,10 +1,5 @@
 import firebaseApp from './firebase'
-import {
-  getDatabase, ref, push,
-  child, get, off, onValue,
-  remove, set, onChildRemoved,
-  onChildChanged
-} from 'firebase/database'
+import {getDatabase, ref, push, onValue, remove, set} from 'firebase/database'
 
 const database = getDatabase(firebaseApp)
 const expensesRef = ref(database, 'expenses')
