@@ -27,7 +27,8 @@ export const setExpenses = (expenses) => ({
 })
 
 export const addExpenseRx = (expense = {}) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.uid
     const {
       description = '',
       note = '',
@@ -35,14 +36,15 @@ export const addExpenseRx = (expense = {}) => {
       createdAt = 0
     } = expense
     const expenseData = {description, note, amount, createdAt}
-    const newExpense = await dbAddExpense(expenseData)
+    const newExpense = await dbAddExpense(userId, expenseData)
     dispatch(addExpense(newExpense))
     return newExpense
   }
 }
 
 export const updateExpenseRx = (expenseId, expense = {}) => {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    const userId = getState().auth.uid
     const {
       description = '',
       note = '',
@@ -50,22 +52,24 @@ export const updateExpenseRx = (expenseId, expense = {}) => {
       createdAt = 0
     } = expense
     const expenseData = {description, note, amount, createdAt}
-    const updateExpense = await dbUpdateExpense(expenseId, expenseData)
+    const updateExpense = await dbUpdateExpense(userId, expenseId, expenseData)
     dispatch(editExpense(expenseId, updateExpense))
     return updateExpense
   }
 }
 
 export const removeExpenseRx = (id) => {
-  return async dispatch => {
-    await dbRemoveExpense(id)
+  return async (dispatch, getState) => {
+    const userId = getState().auth.uid
+    await dbRemoveExpense(userId, id)
     dispatch(removeExpense(id))
   }
 }
 
 export const setExpensesRx = () => {
-  return dispatch => {
-    subscribeToExpenses(expenses => {
+  return (dispatch, getState) => {
+    const userId = getState().auth.uid
+    subscribeToExpenses(userId, (expenses) => {
       dispatch(setExpenses(expenses))
     })
   }

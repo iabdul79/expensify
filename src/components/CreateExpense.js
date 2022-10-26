@@ -7,7 +7,7 @@ import {addExpenseRx} from '../actions/expense-actions'
 export class AddExpense extends React.Component {
   addExpense = (expense) => {
     this.props.addExpense(expense)
-    this.props.history.push('/')
+    this.props.history.push('/dashboard')
   }
   render() {
     return (

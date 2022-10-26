@@ -1,11 +1,12 @@
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 import { addExpense, removeExpense, editExpense, addExpenseRx, setExpenses, setExpensesRx, updateExpenseRx, removeExpenseRx } from '../../actions/expense-actions'
 import expenses from '../fixtures/expenses'
-import thunk from 'redux-thunk'
 import { dbAddExpense, dbRemoveExpense, dbUpdateExpense, subscribeToExpenses } from '../../firebase/firebase-operations'
 jest.mock('../../firebase/firebase-operations')
 
 
+const defaultAuthState = {uid: 'sample_user_34'}
 const createMockStore = configureMockStore([thunk])
 
 test('should setup remove expense action object', () => {
@@ -44,7 +45,7 @@ test('should update expenses to the store', () => {
 })
 
 test('should add expense to database and store for given values', async () => {
-  const store = createMockStore({})
+  const store = createMockStore({auth: defaultAuthState})
   const expenseData = {
     description: 'Mouse',
     note: 'for laptop',
@@ -70,7 +71,7 @@ test('should add expense to database and store for given values', async () => {
 })
 
 test('should add expense to database and store with default values', async () => {
-  const store = createMockStore({})
+  const store = createMockStore({auth: defaultAuthState})
   const defaultExpense = {
     description: '',
     note: '',
@@ -96,8 +97,8 @@ test('should add expense to database and store with default values', async () =>
 })
 
 test('should set expenses to the store from database', () => {
-  const store = createMockStore({})
-  subscribeToExpenses.mockImplementation((callback) => {
+  const store = createMockStore({auth: defaultAuthState})
+  subscribeToExpenses.mockImplementation((userId, callback) => {
     callback(expenses)
   })
   store.dispatch(setExpensesRx())
@@ -109,7 +110,7 @@ test('should set expenses to the store from database', () => {
 })
 
 test('should update expense to database and store', async () => {
-  const store = createMockStore({})
+  const store = createMockStore({auth: defaultAuthState})
   const expenseData = {
     description: 'Mouse',
     note: 'for laptop',
@@ -124,7 +125,7 @@ test('should update expense to database and store', async () => {
   )
   await store.dispatch(updateExpenseRx('test_sample_id_2', expenseData))
   const action = store.getActions()[0]
-  expect(dbUpdateExpense).toHaveBeenCalledWith('test_sample_id_2', expenseData)
+  expect(dbUpdateExpense).toHaveBeenCalledWith('sample_user_34', 'test_sample_id_2', expenseData)
   expect(action).toEqual({
     type: 'EDIT_EXPENSE',
     id: 'test_sample_id_2',
@@ -136,12 +137,12 @@ test('should update expense to database and store', async () => {
 })
 
 test('should remove expense from database and store', async () => {
-  const store = createMockStore({})
+  const store = createMockStore({auth: defaultAuthState})
   dbRemoveExpense.mockResolvedValue(
     Promise.resolve({})
   )
   await store.dispatch(removeExpenseRx('test_sample_id_2'))
-  expect(dbRemoveExpense).toHaveBeenCalledWith('test_sample_id_2')
+  expect(dbRemoveExpense).toHaveBeenCalledWith('sample_user_34', 'test_sample_id_2')
   const action = store.getActions()[0]
   expect(action).toEqual({
     type: 'REMOVE_EXPENSE',

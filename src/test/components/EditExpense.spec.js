@@ -27,12 +27,12 @@ test('should have a edit expense component', () => {
 
 test('should call edit expense with the given id and updated expense', () => {
   wrapper.find('ExpenseForm').prop('onSubmit')(expense)
-  expect(history.push).toHaveBeenLastCalledWith('/')
+  expect(history.push).toHaveBeenLastCalledWith('/dashboard')
   expect(editExpense).toHaveBeenLastCalledWith(expenseId, expense)
 })
 
 test('should call remove expense with the given id', () => {
   wrapper.find('button').simulate('click')
-  expect(history.push).toHaveBeenLastCalledWith('/')
+  expect(history.push).toHaveBeenLastCalledWith('/dashboard')
   expect(removeExpense).toHaveBeenLastCalledWith(expenseId)
 })

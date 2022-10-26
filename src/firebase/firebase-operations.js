@@ -2,11 +2,10 @@ import firebaseApp from './firebase'
 import {getDatabase, ref, push, onValue, remove, set} from 'firebase/database'
 
 const database = getDatabase(firebaseApp)
-const expensesRef = ref(database, 'expenses')
 
-export const subscribeToExpenses = (callback) => {
+export const subscribeToExpenses = (userId, callback) => {
   const expenses = []
-  onValue(expensesRef, snapshot => {
+  onValue(ref(database, getUserRefPath(userId)), snapshot => {
     snapshot.forEach(shot => {
       expenses.push({
         id: shot.key,
@@ -20,8 +19,8 @@ export const subscribeToExpenses = (callback) => {
   })
 }
 
-export const dbAddExpense = async (expense) => {
-  const pushRef = push(expensesRef)
+export const dbAddExpense = async (userId, expense) => {
+  const pushRef = push(ref(database, getUserRefPath(userId)))
   await set(pushRef, expense)
   return {
     id: pushRef.key,
@@ -29,8 +28,8 @@ export const dbAddExpense = async (expense) => {
   }
 }
 
-export const dbUpdateExpense = async (expenseId, expense) => {
-  const updateRef = ref(database, `expenses/${expenseId}`)
+export const dbUpdateExpense = async (userId, expenseId, expense) => {
+  const updateRef = ref(database, getRefPath(userId, expenseId))
   await set(updateRef, expense)
   return {
     id: updateRef.key,
@@ -38,6 +37,9 @@ export const dbUpdateExpense = async (expenseId, expense) => {
   }
 }
 
-export const dbRemoveExpense = (expenseId) => {
-  return remove(ref(database, `expenses/${expenseId}`))
+export const dbRemoveExpense = (userId, expenseId) => {
+  return remove(ref(database, getRefPath(userId, expenseId)))
 }
+
+const getUserRefPath = (userId) => `users/${userId}/expenses`;
+const getRefPath = (userId, expenseId) => `${getUserRefPath(userId)}/${expenseId}`;

@@ -1,33 +1,53 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {BrowserRouter} from 'react-router-dom'
-import Header from './components/Header'
-import AppRouter from './routers/AppRouter'
+import { Provider } from 'react-redux'
+import {Router} from 'react-router-dom'
+import {createBrowserHistory} from 'history';
+import 'react-dates/lib/css/_datepicker.css'
 import 'normalize.css/normalize.css'
 import './styles/main.scss'
-import 'react-dates/lib/css/_datepicker.css'
+import AppRouter from './routers/AppRouter'
 import configureStore from './store/configure-store'
-import { Provider } from 'react-redux'
 import { setExpensesRx } from './actions/expense-actions'
+import { onAuthChange } from './firebase/firebase-auth'
+import { login, logout } from './actions/auth-actions'
+
+const history = createBrowserHistory()
 
 const store = configureStore()
 
-store.dispatch(setExpensesRx())
-
-
-const AppComponent = (
-  <BrowserRouter>
-    <div>
-      <Header />
-      <AppRouter />
-    </div>
-  </BrowserRouter>
+const AppComponent = () => (
+  <Router history={history}>
+    <AppRouter />
+  </Router>
 )
 
 const StateWrappedComponent = (
   <Provider store={store}>
-    {AppComponent}
+    <AppComponent />
   </Provider>
 )
 
-ReactDOM.render(StateWrappedComponent, document.getElementById('root'))
+let isAppRendered = false
+const renderApplication = () => {
+  if (!isAppRendered) {
+    ReactDOM.render(StateWrappedComponent, document.getElementById('root'))
+    isAppRendered = true
+  }
+}
+
+onAuthChange(
+  (user) => {
+    store.dispatch(login(user.uid))
+    store.dispatch(setExpensesRx())
+    renderApplication()
+    if (history.location.pathname === '/') {
+      history.push('/dashboard')
+    }
+  },
+  () => {
+    store.dispatch(logout())
+    renderApplication()
+    history.push('/')
+  }
+)

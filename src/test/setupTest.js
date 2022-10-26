@@ -7,3 +7,9 @@ Enzyme.configure({
 
 jest.mock('firebase/app')
 jest.mock('firebase/database')
+jest.mock('firebase/auth', () => ({
+  getAuth: () => ({
+    onAuthStateChanged: () => {},
+  }),
+  GoogleAuthProvider: function () {}
+}))

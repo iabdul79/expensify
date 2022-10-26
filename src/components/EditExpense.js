@@ -6,11 +6,11 @@ import ExpenseForm from './ExpenseForm'
 export class EditExpense extends React.Component {
   editExpense = (updatedExpense) => {
     this.props.editExpense(this.props.expenseId, updatedExpense)
-    this.props.history.push('/')
+    this.props.history.push('/dashboard')
   }
   removeExpense = () => {
     this.props.removeExpense(this.props.expenseId)
-    this.props.history.push('/')
+    this.props.history.push('/dashboard')
   }
 
   render() {

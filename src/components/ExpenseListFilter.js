@@ -6,9 +6,7 @@ import { DateRangePicker } from 'react-dates'
 export class ExpenseListFilter extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      calenderFocused: 'startDate',
-    }
+    this.state = {}
   }
 
   onFilterTextChange = (e) => {
