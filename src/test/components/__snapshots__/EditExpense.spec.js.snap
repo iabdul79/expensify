@@ -2,7 +2,22 @@
 
 exports[`should have a edit expense component 1`] = `
 <div>
-  <div>
+  <div
+    className="page-header"
+  >
+    <div
+      className="main-container"
+    >
+      <h1
+        className="page-header__title"
+      >
+        Edit Expense
+      </h1>
+    </div>
+  </div>
+  <div
+    className="main-container"
+  >
     <ExpenseForm
       expense={
         Object {
@@ -16,9 +31,10 @@ exports[`should have a edit expense component 1`] = `
       onSubmit={[Function]}
     />
     <button
+      className="button button--secondary"
       onClick={[Function]}
     >
-      Remove
+      Remove expense
     </button>
   </div>
 </div>

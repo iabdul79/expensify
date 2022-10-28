@@ -1,18 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`should show expense item details for a passed item 1`] = `
-<div>
-  <[object Object]
-    to="/edit/3"
-  >
-    <h2>
+<[object Object]
+  className="list-item"
+  to="/edit/3"
+>
+  <div>
+    <h2
+      className="list-item__title"
+    >
       Credit card
     </h2>
-  </[object Object]>
-  <p>
+    <span
+      className="list-item__sub-title"
+    >
+      January 5th, 1970
+    </span>
+  </div>
+  <h3
+    className="list-item__data"
+  >
     $12,100.00
-    -
-    January 5th, 1970
-  </p>
-</div>
+  </h3>
+</[object Object]>
 `;

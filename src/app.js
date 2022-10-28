@@ -51,3 +51,5 @@ onAuthChange(
     history.push('/')
   }
 )
+
+ReactDOM.render(<p>Loading...</p>, document.getElementById('root'))

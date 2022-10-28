@@ -1,0 +1,24 @@
+.box-layout {
+  align-items: center;
+  background: url('/images/hero.jpg');
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+  &__box {
+    background: fade-out(#fff, .15);
+    border-radius: 5px;
+    box-shadow: 1rem 1rem 10rem 0;
+    padding: $l-size $m-size;
+    text-align: center;
+    width: 25rem;
+    p {
+      margin-bottom: $s-size;
+    }
+  }
+  &__title {
+    margin: 0 0 $m-size 0;
+    line-height: 1;
+  }
+}

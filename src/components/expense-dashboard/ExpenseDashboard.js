@@ -5,8 +5,8 @@ import ExpenseSummary from '../ExpenseSummary'
 
 export default () => (
   <div>
-    <ExpenseListFilter />
     <ExpenseSummary />
+    <ExpenseListFilter />
     <ExpenseList />
   </div>
 )
