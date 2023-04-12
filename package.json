@@ -8,11 +8,10 @@
     "dev": "webpack serve --mode development",
     "test:dev": "jest --config=jest.config.json --watch",
     "test": "jest --config=jest.config.json",
-    "start": "node server/server.js",
-    "heroku-postbuild": "yarn run build"
+    "start": "node server/server.js"
   },
   "engines": {
-    "node": "^14.19.0"
+    "node": "^16.19.0"
   },
   "keywords": [],
   "author": "",
@@ -30,7 +29,6 @@
     "history": "4.7.2",
     "mini-css-extract-plugin": "1.4.1",
     "moment": "2.18.1",
-    "node-sass": "^4.14.1",
     "normalize.css": "^7.0.0",
     "numeral": "2.0.6",
     "raf": "3.3.2",
@@ -44,6 +42,7 @@
     "redux": "3.7.1",
     "redux-mock-store": "1.2.3",
     "redux-thunk": "2.2.0",
+    "sass": "^1.57.1",
     "sass-loader": "^7.3.1",
     "style-loader": "^0.18.2",
     "uuid": "3.1.0",
